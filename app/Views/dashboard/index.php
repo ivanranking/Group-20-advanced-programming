@@ -124,8 +124,18 @@
                      <ul class="list-group list-group-flush">
                         <?php foreach($recent_projects as $project): ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="<?= site_url('projects/' . $project['id']) ?>"><?= esc($project['name']) ?></a>
-                                <span class="badge bg-secondary"><?= esc($project['status']) ?></span>
+                                <div>
+                                    <a href="<?= site_url('projects/' . $project['id']) ?>"><?= esc($project['name']) ?></a>
+                                    <br><small class="text-muted">Status: <span class="badge bg-secondary"><?= esc($project['status']) ?></span></small>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="<?= site_url('projects/' . $project['id'] . '/edit') ?>" class="btn btn-outline-warning">Edit</a>
+                                    <form action="<?= site_url('projects/' . $project['id']) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
+                                    </form>
+                                </div>
                             </li>
                         <?php endforeach; ?>
                         <?php if (empty($recent_projects)): ?>

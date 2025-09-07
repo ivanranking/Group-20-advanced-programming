@@ -16,6 +16,8 @@ class ProjectController extends BaseController
     public function index()
     {
         $projectModel = new ProjectModel();
+        $programModel = new ProgramModel();
+        $facilityModel = new FacilityModel();
         $facilityId = $this->request->getGet('facility');
         $programId = $this->request->getGet('program');
 
@@ -33,7 +35,9 @@ class ProjectController extends BaseController
             'projects' => $query->findAll(),
             'title' => 'All Projects',
             'facility_id' => $facilityId,
-            'program_id' => $programId
+            'program_id' => $programId,
+            'facilities' => $facilityModel->findAll(),
+            'programs' => $programModel->findAll()
         ];
 
         return view('projects/index', $data);
@@ -86,8 +90,28 @@ class ProjectController extends BaseController
         $projectModel = new ProjectModel();
         $data = $this->request->getPost(['name', 'description', 'program_id', 'facility_id', 'status', 'start_date', 'end_date']);
 
+        // Debug: Log the data being saved
+        log_message('debug', 'Project create data: ' . json_encode($data));
+        log_message('debug', 'POST data: ' . json_encode($this->request->getPost()));
+
+        // Validate the data
+        if (!$this->validate([
+            'name' => 'required|min_length[3]|max_length[255]',
+            'description' => 'permit_empty|max_length[1000]',
+            'program_id' => 'permit_empty|integer',
+            'facility_id' => 'permit_empty|integer',
+            'status' => 'required|in_list[active,inactive,completed]',
+            'start_date' => 'permit_empty|valid_date',
+            'end_date' => 'permit_empty|valid_date'
+        ])) {
+            log_message('error', 'Project validation failed: ' . json_encode($this->validator->getErrors()));
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         if ($projectModel->save($data) === false) {
-            return redirect()->back()->withInput()->with('errors', $projectModel->errors());
+            $errors = $projectModel->errors();
+            log_message('error', 'Project save failed: ' . json_encode($errors));
+            return redirect()->back()->withInput()->with('errors', $errors);
         }
 
         return redirect()->to('/projects')->with('success', 'Project created successfully.');

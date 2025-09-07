@@ -22,7 +22,15 @@
                             <strong>Email:</strong> <?= esc($participant['email']) ?><br>
                             <strong>Role:</strong> <span class="badge bg-primary"><?= esc($participant['role']) ?></span>
                         </p>
-                        <a href="<?= site_url('participants/' . $participant['id']) ?>" class="btn btn-primary">View Details</a>
+                        <div class="d-flex gap-2">
+                            <a href="<?= site_url('participants/' . $participant['id']) ?>" class="btn btn-primary">View Details</a>
+                            <a href="<?= site_url('participants/' . $participant['id'] . '/edit') ?>" class="btn btn-warning">Edit</a>
+                            <form action="<?= site_url('participants/' . $participant['id']) ?>" method="post" class="d-inline">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this participant?')">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
