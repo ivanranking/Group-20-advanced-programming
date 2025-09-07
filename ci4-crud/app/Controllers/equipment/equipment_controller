@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\EquipmentModel;
+use App\Controllers\BaseController;
+
+class EquipmentController extends BaseController
+{
+    public function index()
+    {
+        $model = new EquipmentModel();
+        $data = [
+            'equipment_list' => $model->findAll(),
+            'title' => 'All Equipment'
+        ];
+        return view('equipment/index', $data);
+    }
+
+    public function new()
+    {
+        return view('equipment/new', ['title' => 'Add New Equipment']);
+    }
+
+    public function create()
+    {
+        $model = new EquipmentModel();
+        if ($this->request->getMethod() === 'post' && $model->save($this->request->getPost())) {
+            return redirect()->to('/equipment')->with('success', 'Equipment added.');
+        } else {
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
+    }
+
+    public function edit($id = null)
+    {
+        $model = new EquipmentModel();
+        $data = [
+            'equipment' => $model->find($id),
+            'title' => 'Edit Equipment'
+        ];
+        if (empty($data['equipment'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Cannot find the equipment item: ' . $id);
+        }
+        return view('equipment/edit', $data);
+    }
+    
+    public function update($id = null)
+    {
+        $model = new EquipmentModel();
+        if ($this->request->getMethod() === 'post' && $model->update($id, $this->request->getPost())) {
+            return redirect()->to('/equipment')->with('success', 'Equipment updated.');
+        } else {
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
+    }
+
+    public function delete($id = null)
+    {
+        $model = new EquipmentModel();
+        $model->delete($id);
+        return redirect()->to('/equipment')->with('success', 'Equipment deleted.');
+    }
+}
