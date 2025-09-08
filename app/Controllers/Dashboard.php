@@ -20,7 +20,13 @@ class Dashboard extends BaseController
                 'service_count' => $db->table('services')->countAll(),
                 'facility_count' => $db->table('facilities')->countAll(),
                 'outcome_count' => $db->table('outcomes')->countAll(),
-                'recent_projects' => $db->table('projects')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray()
+                'recent_projects' => $db->table('projects')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_programs' => $db->table('programs')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_participants' => $db->table('participants')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_equipment' => $db->table('equipment')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_services' => $db->table('services')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_facilities' => $db->table('facilities')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'recent_outcomes' => $db->table('outcomes')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray()
             ];
         } catch (\Throwable $e) {
             $data = [
@@ -32,7 +38,13 @@ class Dashboard extends BaseController
                 'service_count' => 0,
                 'facility_count' => 0,
                 'outcome_count' => 0,
-                'recent_projects' => []
+                'recent_projects' => [],
+                'recent_programs' => [],
+                'recent_participants' => [],
+                'recent_equipment' => [],
+                'recent_services' => [],
+                'recent_facilities' => [],
+                'recent_outcomes' => []
             ];
         }
 

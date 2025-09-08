@@ -10,6 +10,7 @@ class EquipmentController extends BaseController
     public function index()
     {
         $model = new EquipmentModel();
+        $facilityModel = new \App\Models\FacilityModel();
         $facilityId = $this->request->getGet('facility');
         $search = $this->request->getGet('search');
 
@@ -29,7 +30,8 @@ class EquipmentController extends BaseController
             'equipment_list' => $query->findAll(),
             'title' => 'All Equipment',
             'facility_id' => $facilityId,
-            'search' => $search
+            'search' => $search,
+            'facilities' => $facilityModel->findAll()
         ];
         return view('equipment/index', $data);
     }

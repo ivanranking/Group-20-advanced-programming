@@ -7,13 +7,13 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Dashboard::index');
 
-$routes->resource('services');
-$routes->resource('participants');
-$routes->resource('programs');
-$routes->resource('equipment');
-$routes->resource('projects');
-$routes->resource('outcomes');
-$routes->resource('facilities');
+$routes->resource('services', ['controller' => 'Services']);
+$routes->resource('participants', ['controller' => 'ParticipantController']);
+$routes->resource('programs', ['controller' => 'ProgramController']);
+$routes->resource('equipment', ['controller' => 'EquipmentController']);
+$routes->resource('projects', ['controller' => 'ProjectController']);
+$routes->resource('outcomes', ['controller' => 'OutcomesController']);
+$routes->resource('facilities', ['controller' => 'FacilityController']);
 
 // Additional routes for project participants
 $routes->post('projects/(:num)/add-participant/(:num)', 'ProjectController::addParticipant/$1/$2');

@@ -10,6 +10,7 @@ class Services extends BaseController
     public function index()
     {
         $model = new ServiceModel();
+        $facilityModel = new \App\Models\FacilityModel();
         $facilityId = $this->request->getGet('facility');
 
         $query = $model;
@@ -21,7 +22,8 @@ class Services extends BaseController
         $data = [
             'services' => $query->findAll(),
             'title' => 'All Services',
-            'facility_id' => $facilityId
+            'facility_id' => $facilityId,
+            'facilities' => $facilityModel->findAll()
         ];
         return view('services/index', $data);
     }
