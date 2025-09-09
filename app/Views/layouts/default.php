@@ -12,42 +12,164 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-            background-size: cover;
+            background: #f5f7fa;
+            display: flex;
+            overflow: hidden;
         }
-        .header {
-            background: rgba(0,0,0,0.7);
-            color: #fff;
+        .sidebar {
+            width: 220px;
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+            padding: 1.5rem 0;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .sidebar:hover {
+            box-shadow: 4px 0 20px rgba(0,0,0,0.12);
+        }
+        .sidebar .logo {
+            margin-bottom: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+        .sidebar .logo:hover {
+            transform: scale(1.05);
+        }
+        .sidebar .logo img {
+            height: 50px;
+        }
+        .sidebar .nav-item {
+            padding: 0.75rem 1.5rem;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            width: 90%;
+            margin: 0.25rem auto;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .sidebar .nav-item.active {
+            color: #1e40af;
+            background: #dbeafe;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .sidebar .nav-item:hover {
+            color: #1e40af;
+            background: #eff6ff;
+            transform: translateX(5px);
+        }
+        .sidebar .nav-item .icon {
+            font-size: 1.3rem;
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .sidebar .nav-item:hover .icon {
+            transform: scale(1.1);
+        }
+        .sidebar .nav-item .text {
+            font-size: 0.95rem;
+            display: inline;
+        }
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+        .top-nav {
+            background: #fff;
             padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+        .top-nav:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+        .top-nav h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin: 0;
+            font-weight: 600;
+        }
+        .top-nav .user {
             display: flex;
             align-items: center;
         }
-        .header img {
-            height: 48px;
-            margin-right: 1rem;
+        .top-nav .user img {
+            height: 36px;
+            border-radius: 50%;
+            margin-left: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+        .top-nav .user img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(0,0,0,0.15);
         }
-        .main-content {
-            background: rgba(255,255,255,0.95);
-            margin: 2rem auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-            max-width: 900px;
+        .content {
             padding: 2rem;
+            flex: 1;
+            background: #f5f7fa;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="/images/logo.png" alt="Capstone Logo">
-        <h1>Capstone Dashboard</h1>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="/images/logo.png" alt="Capstone Logo">
+        </div>
+        <a href="<?= site_url('dashboard') ?>" class="nav-item active">
+            <i class="fas fa-home icon"></i>
+            <span class="text">Home</span>
+        </a>
+        <a href="<?= site_url('dashboard') ?>" class="nav-item">
+            <i class="fas fa-tachometer-alt icon"></i>
+            <span class="text">Dashboard</span>
+        </a>
+        <a href="<?= site_url('facilities') ?>" class="nav-item">
+            <i class="fas fa-building icon"></i>
+            <span class="text">Facilities</span>
+        </a>
+        <a href="<?= site_url('services') ?>" class="nav-item">
+            <i class="fas fa-concierge-bell icon"></i>
+            <span class="text">Services</span>
+        </a>
+        <a href="<?= site_url('projects') ?>" class="nav-item">
+            <i class="fas fa-project-diagram icon"></i>
+            <span class="text">Projects</span>
+        </a>
+        <a href="<?= site_url('participants') ?>" class="nav-item">
+            <i class="fas fa-user-friends icon"></i>
+            <span class="text">Participants</span>
+        </a>
+        <a href="<?= site_url('outcomes') ?>" class="nav-item">
+            <i class="fas fa-chart-bar icon"></i>
+            <span class="text">Outcomes</span>
+        </a>
     </div>
-    <div class="main-content">
-        <?= $this->renderSection('content') ?>
+    <div class="main-container">
+        <div class="top-nav">
+            <h2>Admin Dashboard</h2>
+            <div class="user">
+                <img src="/images/user.png" alt="User Profile">
+            </div>
+        </div>
+        <div class="content">
+            <?= $this->renderSection('content') ?>
+        </div>
     </div>
 </body>
 </html>

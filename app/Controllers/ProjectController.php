@@ -73,11 +73,13 @@ class ProjectController extends BaseController
     {
         $programModel = new ProgramModel();
         $facilityModel = new FacilityModel();
+        $participantModel = new ParticipantModel();
 
         $data = [
             'title' => 'Create New Project',
             'programs' => $programModel->findAll(),
-            'facilities' => $facilityModel->findAll()
+            'facilities' => $facilityModel->findAll(),
+            'participants' => $participantModel->findAll()
         ];
         return view('projects/new', $data);
     }
@@ -126,6 +128,7 @@ class ProjectController extends BaseController
         $projectModel = new ProjectModel();
         $programModel = new ProgramModel();
         $facilityModel = new FacilityModel();
+        $participantModel = new ParticipantModel();
 
         $project = $projectModel->find($id);
 
@@ -137,6 +140,7 @@ class ProjectController extends BaseController
             'project' => $project,
             'programs' => $programModel->findAll(),
             'facilities' => $facilityModel->findAll(),
+            'participants' => $participantModel->findAll(),
             'title' => 'Edit Project: ' . esc($project['name'])
         ];
 
