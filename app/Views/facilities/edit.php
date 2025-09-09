@@ -1,60 +1,70 @@
-<?= $this->extend('layouts/default') ?>
+<?= $this->extend('layouts/default') ?> 
 
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
+<?= $this->section('title') ?>Edit Facility<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Edit Facility</h4>
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Edit Facility</h2>
+        <a href="<?= site_url('facilities') ?>" class="btn btn-outline-secondary rounded-pill shadow-sm">
+            <i class="fas fa-arrow-left me-2"></i> Back to Facilities
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <form method="post" action="<?= site_url('facilities/update/' . $facility['id']) ?>" class="needs-validation" novalidate>
+                <?= csrf_field() ?>
+                <input type="hidden" name="_method" value="PUT">
+
+                <!-- Name -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Facility Name</label>
+                    <input type="text" name="name" value="<?= esc($facility['name']) ?>" 
+                           class="form-control rounded-pill shadow-sm" required>
                 </div>
-                <div class="card-body">
-                    <form action="<?= site_url('facilities/' . $facility['id']) ?>" method="post">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="_method" value="PUT">
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name *</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= old('name', $facility['name']) ?>" required>
-                            <?php if (isset($errors['name'])): ?>
-                                <div class="text-danger small"><?= $errors['name'] ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"><?= old('description', $facility['description']) ?></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="location" name="location" value="<?= old('location', $facility['location']) ?>">
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="<?= site_url('facilities/' . $facility['id']) ?>" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Update Facility</button>
-                        </div>
-                    </form>
+                <!-- Location -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Location</label>
+                    <input type="text" name="location" value="<?= esc($facility['location']) ?>" 
+                           class="form-control rounded-pill shadow-sm">
                 </div>
-            </div>
 
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5>Danger Zone</h5>
+                <!-- Type -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Type</label>
+                    <input type="text" name="type" value="<?= esc($facility['type']) ?>" 
+                           class="form-control rounded-pill shadow-sm">
                 </div>
-                <div class="card-body">
-                    <p class="text-muted">Deleting this facility will also disassociate it from all related projects, services, and equipment.</p>
-                    <form action="<?= site_url('facilities/' . $facility['id']) ?>" method="post" onsubmit="return confirm('Are you sure you want to delete this facility?')">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger">Delete Facility</button>
-                    </form>
+
+                <!-- Status -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select rounded-pill shadow-sm">
+                        <option value="active" <?= ($facility['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                        <option value="inactive" <?= ($facility['status'] ?? '') === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                    </select>
                 </div>
-            </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Description</label>
+                    <textarea name="description" rows="4" class="form-control rounded-4 shadow-sm"><?= esc($facility['description']) ?></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm">
+                        <i class="fas fa-save me-2"></i> Update Facility
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+
 </div>
 <?= $this->endSection() ?>

@@ -1,45 +1,72 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
+<?= $this->section('title') ?>Facilities<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <div class="container mt-5">
-    <h1 class="mb-4">Facilities</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Facilities</h1>
+        <a href="<?= site_url('facilities/create') ?>" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Add Facility
+        </a>
+    </div>
 
-    <!-- Search Form -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <form method="get" class="d-flex">
-                <input type="text" name="search" class="form-control me-2" placeholder="Search facilities..." value="<?= esc($search) ?>">
-                <button type="submit" class="btn btn-primary">Search</button>
-                <?php if ($search): ?>
-                    <a href="<?= site_url('facilities') ?>" class="btn btn-secondary ms-2">Clear</a>
-                <?php endif; ?>
-            </form>
+    <!-- Search -->
+    <form method="get" action="<?= site_url('facilities') ?>" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search facilities..." value="<?= isset($_GET['search']) ? esc($_GET['search']) : '' ?>">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="bi bi-search"></i> Search
+            </button>
         </div>
-        <div class="col-md-6 text-end">
-            <a href="<?= site_url('facilities/new') ?>" class="btn btn-success">Add New Facility</a>
+    </form>
+
+    <!-- Facilities Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($facilities) && is_array($facilities)): ?>
+                        <?php foreach ($facilities as $facility): ?>
+                            <tr>
+                                <td><?= esc($facility['id']) ?></td>
+                                <td><?= esc($facility['name']) ?></td>
+                                <td><?= esc($facility['location']) ?></td>
+                                <td><?= esc($facility['description']) ?></td>
+                                <td>
+                                    <a href="<?= site_url('facilities/edit/'.$facility['id']) ?>" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a href="<?= site_url('facilities/delete/'.$facility['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this facility?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" class="text-center">No facilities found.</td>
+                        </tr>
+                    <?php endif ?>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Facilities List -->
-    <div class="row">
-        <?php foreach ($facilities as $facility): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= esc($facility['name']) ?></h5>
-                        <p class="card-text"><?= esc($facility['description']) ?: 'No description' ?></p>
-                        <p class="text-muted">Location: <?= esc($facility['location']) ?: 'Not specified' ?></p>
-                        <a href="<?= site_url('facilities/' . $facility['id']) ?>" class="btn btn-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-    <?php if (empty($facilities)): ?>
-        <div class="alert alert-info">No facilities found.</div>
-    <?php endif; ?>
+    <!-- Pagination (if needed) -->
+    <?php if (isset($pager)) : ?>
+        <div class="mt-3">
+            <?= $pager->links() ?>
+        </div>
+    <?php endif ?>
 </div>
 <?= $this->endSection() ?>
