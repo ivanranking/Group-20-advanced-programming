@@ -3,15 +3,15 @@
 <?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="container mt-5">
-    <h1 class="mb-4">Services</h1>
+<div class="container mx-auto mt-5 px-4">
+    <h1 class="text-2xl font-bold mb-4">Services</h1>
 
     <!-- Filter Form -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <form method="get" class="row g-3">
-                <div class="col-md-6">
-                    <select name="facility" class="form-select">
+    <div class="mb-4">
+        <div class="flex flex-col md:flex-row md:items-end gap-4">
+            <form method="get" class="flex flex-col md:flex-row gap-3 flex-1">
+                <div class="flex-1">
+                    <select name="facility" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">All Facilities</option>
                         <?php foreach ($facilities ?? [] as $facility): ?>
                             <option value="<?= $facility['id'] ?>" <?= $facility_id == $facility['id'] ? 'selected' : '' ?>>
@@ -20,46 +20,42 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                <div class="flex gap-2">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Filter</button>
                     <?php if ($facility_id): ?>
-                        <a href="<?= site_url('services') ?>" class="btn btn-secondary ms-2">Clear Filters</a>
+                        <a href="<?= site_url('services') ?>" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Clear Filters</a>
                     <?php endif; ?>
                 </div>
             </form>
-        </div>
-        <div class="col-md-4 text-end">
-            <a href="<?= site_url('services/new') ?>" class="btn btn-success">Add New Service</a>
+            <div class="text-right">
+                <a href="<?= site_url('services/new') ?>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Service</a>
+            </div>
         </div>
     </div>
 
     <!-- Services List -->
-    <div class="row">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <?php foreach ($services as $service): ?>
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= esc($service['name']) ?></h5>
-                        <p class="card-text">
-                            <strong>Description:</strong> <?= esc($service['description'] ?? 'No description') ?>
-                        </p>
-                        <div class="d-flex gap-2">
-                            <a href="<?= site_url('services/' . $service['id']) ?>" class="btn btn-primary">View Details</a>
-                            <a href="<?= site_url('services/' . $service['id'] . '/edit') ?>" class="btn btn-warning">Edit</a>
-                            <form action="<?= site_url('services/' . $service['id']) ?>" method="post" class="d-inline">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this service?')">Delete</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h5 class="text-xl font-semibold mb-2"><?= esc($service['name']) ?></h5>
+                <p class="mb-4">
+                    <strong>Description:</strong> <?= esc($service['description'] ?? 'No description') ?>
+                </p>
+                <div class="flex gap-2">
+                    <a href="<?= site_url('services/' . $service['id']) ?>" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">View Details</a>
+                    <a href="<?= site_url('services/' . $service['id'] . '/edit') ?>" class="bg-yellow-500 hover:bg-yellow-700 text-white px-4 py-2 rounded">Edit</a>
+                    <form action="<?= site_url('services/' . $service['id']) ?>" method="post" style="display: inline;">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" onclick="return confirm('Are you sure you want to delete this service?')">Delete</button>
+                    </form>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
 
     <?php if (empty($services)): ?>
-        <div class="alert alert-info">No services found.</div>
+        <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mt-4">No services found.</div>
     <?php endif; ?>
 </div>
 <?= $this->endSection() ?>

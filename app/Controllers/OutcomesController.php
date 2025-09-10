@@ -15,18 +15,20 @@ class OutcomesController extends BaseController
     {
         $outcomeModel = new OutcomeModel();
         $projectId = $this->request->getGet('project');
-
-        $query = $outcomeModel;
-
-        if ($projectId) {
-            $query = $query->where('project_id', $projectId);
-        }
-
-        $data = [
-            'outcomes' => $query->findAll(),
-            'title' => 'Outcomes',
-            'project_id' => $projectId
-        ];
+        $projectModel = new ProjectModel();
+ 
+         $query = $outcomeModel;
+ 
+         if ($projectId) {
+             $query = $query->where('project_id', $projectId);
+         }
+ 
+         $data = [
+             'outcomes' => $query->findAll(),
+             'title' => 'Outcomes',
+             'projects' => $projectModel->findAll(),
+             'project_id' => $projectId
+         ];
 
         return view('outcomes/index', $data);
     }
