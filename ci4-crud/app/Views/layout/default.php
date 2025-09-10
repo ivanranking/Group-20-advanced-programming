@@ -86,7 +86,7 @@
     
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="<?= site_url('/') ?>" class="<?= uri_string() == '' ? 'active' : '' ?>"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+        <a href="<?= site_url('Dashboard') ?>" class="<?= uri_string() == 'Dashboard' ? 'active' : '' ?>"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
         <a href="<?= site_url('programs') ?>" class="<?= uri_string() == 'programs' ? 'active' : '' ?>"><i class="fas fa-calendar-alt me-2"></i> Programs</a>
         <a href="<?= site_url('projects') ?>" class="<?= uri_string() == 'projects' ? 'active' : '' ?>"><i class="fas fa-project-diagram me-2"></i> Projects</a>
         <a href="<?= site_url('participants') ?>" class="<?= uri_string() == 'participants' ? 'active' : '' ?>"><i class="fas fa-users me-2"></i> Participants</a>
