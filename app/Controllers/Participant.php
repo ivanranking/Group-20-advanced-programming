@@ -60,7 +60,16 @@ class Participant extends BaseController
     public function create()
     {
         $participantModel = new ParticipantModel();
-        $data = $this->request->getPost(['name', 'email', 'role']);
+        $data = $this->request->getPost(['name', 'email', 'phone']);
+        $data['role'] = $this->request->getPost('role') ?? 'participant';
+
+        $profilePicture = $this->request->getFile('profile_picture');
+
+        if ($profilePicture->isValid() && !$profilePicture->hasMoved()) {
+            $newName = $profilePicture->getRandomName();
+            $profilePicture->move(WRITEPATH . 'uploads', $newName);
+            $data['profile_picture'] = $newName;
+        }
 
         if ($participantModel->save($data) === false) {
             return redirect()->back()->withInput()->with('errors', $participantModel->errors());
@@ -103,7 +112,16 @@ class Participant extends BaseController
             return redirect()->to('/participants')->with('error', 'Participant not found.');
         }
 
-        $data = $this->request->getPost(['name', 'email', 'role']);
+        $data = $this->request->getPost(['name', 'email', 'phone']);
+        $data['role'] = $this->request->getPost('role') ?? 'participant';
+
+        $profilePicture = $this->request->getFile('profile_picture');
+
+        if ($profilePicture->isValid() && !$profilePicture->hasMoved()) {
+            $newName = $profilePicture->getRandomName();
+            $profilePicture->move(WRITEPATH . 'uploads', $newName);
+            $data['profile_picture'] = $newName;
+        }
 
         if ($participantModel->update($id, $data) === false) {
             return redirect()->back()->withInput()->with('errors', $participantModel->errors());

@@ -8,7 +8,13 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Dashboard::index');
 
 $routes->resource('services', ['controller' => 'Services']);
-$routes->resource('participants', ['controller' => 'ParticipantController']);
+$routes->get('participants', 'Participant::index');
+$routes->get('participants/new', 'Participant::new');
+$routes->post('participants/create', 'Participant::create');
+$routes->get('participants/view/(:num)', 'Participant::show/$1');
+$routes->get('participants/edit/(:num)', 'Participant::edit/$1');
+$routes->post('participants/update/(:num)', 'Participant::update/$1');
+$routes->get('participants/delete/(:num)', 'Participant::delete/$1');
 $routes->resource('programs', ['controller' => 'ProgramController']);
 $routes->resource('equipment', ['controller' => 'EquipmentController']);
 $routes->resource('projects', ['controller' => 'ProjectController']);

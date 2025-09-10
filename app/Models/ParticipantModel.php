@@ -8,7 +8,7 @@ class ParticipantModel extends Model
 {
     protected $table = 'participants';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name', 'email', 'role'];
+    protected $allowedFields = ['name', 'email', 'role', 'phone', 'profile_picture'];
     protected $useTimestamps = true;
 
     public function getProjects($participantId)

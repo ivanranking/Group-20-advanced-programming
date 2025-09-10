@@ -1,53 +1,28 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
+<?= $this->section('title') ?>Add Participant<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Create New Participant</h4>
-                </div>
-                <div class="card-body">
-                    <form action="<?= site_url('participants') ?>" method="post">
-                        <?= csrf_field() ?>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name *</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= old('name') ?>" required>
-                            <?php if (isset($errors['name'])): ?>
-                                <div class="text-danger small"><?= $errors['name'] ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email *</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>" required>
-                            <?php if (isset($errors['email'])): ?>
-                                <div class="text-danger small"><?= $errors['email'] ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="form-select" id="role" name="role">
-                                <option value="researcher" <?= old('role', 'researcher') == 'researcher' ? 'selected' : '' ?>>Researcher</option>
-                                <option value="student" <?= old('role') == 'student' ? 'selected' : '' ?>>Student</option>
-                                <option value="faculty" <?= old('role') == 'faculty' ? 'selected' : '' ?>>Faculty</option>
-                                <option value="staff" <?= old('role') == 'staff' ? 'selected' : '' ?>>Staff</option>
-                            </select>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="<?= site_url('participants') ?>" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Create Participant</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="bg-white rounded-3xl shadow-xl p-8">
+    <h1 class="text-2xl font-bold mb-4">Add Participant</h1>
+    <form action="<?= site_url('participants/create') ?>" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700">Name</label>
+            <input type="text" name="name" id="name" class="w-full px-4 py-2 border rounded-lg" required>
         </div>
-    </div>
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700">Email</label>
+            <input type="email" name="email" id="email" class="w-full px-4 py-2 border rounded-lg" required>
+        </div>
+        <div class="mb-4">
+            <label for="phone" class="block text-gray-700">Phone</label>
+            <input type="text" name="phone" id="phone" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div class="mb-4">
+            <label for="profile_picture" class="block text-gray-700">Profile Picture</label>
+            <input type="file" name="profile_picture" id="profile_picture" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Participant</button>
+    </form>
 </div>
 <?= $this->endSection() ?>
