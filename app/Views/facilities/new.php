@@ -1,66 +1,96 @@
-<?= $this->extend('layouts/default') ?> 
+<?= $this->extend('layouts/default') ?>
 
 <?= $this->section('title') ?>Create Facility<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="container py-5">
+<style>
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        background-color: #f3f4f6;
+    }
+    .facility-card {ou
+        background: white;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        width: 100%;
+        max-width: 32rem;
+    }
+    .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid #d1d5db;
+        outline: none;
+        margin-bottom: 1rem;
+    }
+    .form-input:focus {
+        border-color: #3b82f6;
+    }
+    .form-label {
+        display: block;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    .btn-submit {
+        background-color: #2563eb;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn-submit:hover {
+        background-color: #1d4ed8;
+    }
+    .btn-back {
+        background-color: #6b7280;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 1rem;
+        transition: background-color 0.3s;
+    }
+    .btn-back:hover {
+        background-color: #4b5563;
+    }
+</style>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Create New Facility</h2>
-        <a href="<?= site_url('facilities') ?>" class="btn btn-outline-secondary rounded-pill shadow-sm">
-            <i class="fas fa-arrow-left me-2"></i> Back to Facilities
-        </a>
-    </div>
+<div class="facility-card">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Create New Facility</h1>
 
-    <!-- Card -->
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-4">
-            <form method="post" action="<?= site_url('facilities/store') ?>" class="needs-validation" novalidate>
-                <?= csrf_field() ?>
+    <form method="POST" action="<?= site_url('facilities/store') ?>">
+        <?= csrf_field() ?>
 
-                <!-- Name -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Facility Name</label>
-                    <input type="text" name="name" class="form-control rounded-pill shadow-sm" required>
-                </div>
+        <label class="form-label">Name:</label>
+        <input type="text" name="name" class="form-input" required>
 
-                <!-- Location -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Location</label>
-                    <input type="text" name="location" class="form-control rounded-pill shadow-sm">
-                </div>
+        <label class="form-label">Location:</label>
+        <input type="text" name="location" class="form-input" required>
 
-                <!-- Type -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Type</label>
-                    <input type="text" name="type" class="form-control rounded-pill shadow-sm">
-                </div>
+        <label class="form-label">Type:</label>
+        <input type="text" name="type" class="form-input" required>
 
-                <!-- Status -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Status</label>
-                    <select name="status" class="form-select rounded-pill shadow-sm">
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                </div>
+        <label class="form-label">Status:</label>
+        <select name="status" class="form-input" required>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+        </select>
 
-                <!-- Description -->
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Description</label>
-                    <textarea name="description" rows="4" class="form-control rounded-4 shadow-sm"></textarea>
-                </div>
-
-                <!-- Submit -->
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm">
-                        <i class="fas fa-save me-2"></i> Save Facility
-                    </button>
-                </div>
-            </form>
+        <div class="flex justify-center mt-6">
+            <a href="<?= site_url('facilities') ?>" class="btn-back">Back to Facilities</a>
+            <button type="submit" class="btn-submit">Create Facility</button>
         </div>
-    </div>
-
+    </form>
 </div>
 <?= $this->endSection() ?>
