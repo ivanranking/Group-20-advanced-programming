@@ -12,7 +12,7 @@ class FacilityModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'description'];
+    protected $allowedFields    = ['name', 'description', 'location', 'type', 'status'];
 
     // Dates
     protected $useTimestamps = true;

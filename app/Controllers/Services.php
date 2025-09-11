@@ -48,6 +48,31 @@ class Services extends BaseController
         }
     }
 
+    public function show($id = null)
+    {
+        $model = new ServiceModel();
+        $facilityModel = new \App\Models\FacilityModel();
+
+        $service = $model->find($id);
+        if (empty($service)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Cannot find the service item: ' . $id);
+        }
+
+        // Get facility information if service has facility_id
+        $facility = null;
+        if ($service['facility_id']) {
+            $facility = $facilityModel->find($service['facility_id']);
+        }
+
+        $data = [
+            'service' => $service,
+            'facility' => $facility,
+            'title' => 'Service Details'
+        ];
+
+        return view('services/show', $data);
+    }
+
     public function edit($id = null)
     {
         $model = new ServiceModel();

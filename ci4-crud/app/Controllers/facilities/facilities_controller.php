@@ -49,4 +49,45 @@ class Facilities extends BaseController
 
         return redirect()->to('/facilities')->with('success', 'Facility created successfully.');
     }
+    public function show($id = null)
+    {
+        $facilityModel = new FacilityModel();
+        $data = [
+            'facility' => $facilityModel->find($id),
+            'title' => 'Facility Details'
+        ];
+
+        return view('facilities/show', $data);
+    }
+
+    public function edit($id = null)
+    {
+        $facilityModel = new FacilityModel();
+        $data = [
+            'facility' => $facilityModel->find($id),
+            'title' => 'Edit Facility'
+        ];
+
+        return view('facilities/edit', $data);
+    }
+
+    public function update($id = null)
+    {
+        $facilityModel = new FacilityModel();
+        $data = $this->request->getPost(['name', 'location', 'type', 'status']);
+
+        if ($facilityModel->update($id, $data) === false) {
+            return redirect()->back()->withInput()->with('errors', $facilityModel->errors());
+        }
+
+        return redirect()->to('/facilities')->with('success', 'Facility updated successfully.');
+    }
+
+    public function delete($id = null)
+    {
+        $facilityModel = new FacilityModel();
+        $facilityModel->delete($id);
+
+        return redirect()->to('/facilities')->with('success', 'Facility deleted successfully.');
+    }
 }

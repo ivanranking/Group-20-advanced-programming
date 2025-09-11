@@ -11,9 +11,8 @@
                     <h4>Edit Equipment</h4>
                 </div>
                 <div class="card-body">
-                    <form action="<?= site_url('equipment/' . $equipment['id']) ?>" method="post">
+                    <form action="<?= site_url('equipment/update/' . $equipment['id']) ?>" method="post">
                         <?= csrf_field() ?>
-                        <input type="hidden" name="_method" value="PUT">
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Name *</label>

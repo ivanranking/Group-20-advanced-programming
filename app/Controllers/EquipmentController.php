@@ -56,6 +56,31 @@ class EquipmentController extends BaseController
         }
     }
 
+    public function show($id = null)
+    {
+        $model = new EquipmentModel();
+        $facilityModel = new \App\Models\FacilityModel();
+
+        $equipment = $model->find($id);
+        if (empty($equipment)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Cannot find the equipment item: ' . $id);
+        }
+
+        // Get facility information if equipment has facility_id
+        $facility = null;
+        if ($equipment['facility_id']) {
+            $facility = $facilityModel->find($equipment['facility_id']);
+        }
+
+        $data = [
+            'equipment' => $equipment,
+            'facility' => $facility,
+            'title' => 'Equipment Details'
+        ];
+
+        return view('equipment/show', $data);
+    }
+
     public function edit($id = null)
     {
         $model = new EquipmentModel();

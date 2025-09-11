@@ -1,96 +1,49 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?>Create Facility<?= $this->endSection() ?>
+<?= $this->section('title') ?><?= esc($title) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<style>
-    .content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 2rem;
-        background-color: #f3f4f6;
-    }
-    .facility-card {ou
-        background: white;
-        padding: 2rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        width: 100%;
-        max-width: 32rem;
-    }
-    .form-input {
-        width: 100%;
-        padding: 0.75rem;
-        border-radius: 0.5rem;
-        border: 1px solid #d1d5db;
-        outline: none;
-        margin-bottom: 1rem;
-    }
-    .form-input:focus {
-        border-color: #3b82f6;
-    }
-    .form-label {
-        display: block;
-        font-weight: 500;
-        color: #374151;
-        margin-bottom: 0.5rem;
-    }
-    .btn-submit {
-        background-color: #2563eb;
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 0.5rem;
-        font-weight: 500;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .btn-submit:hover {
-        background-color: #1d4ed8;
-    }
-    .btn-back {
-        background-color: #6b7280;
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 0.5rem;
-        font-weight: 500;
-        text-decoration: none;
-        display: inline-block;
-        margin-right: 1rem;
-        transition: background-color 0.3s;
-    }
-    .btn-back:hover {
-        background-color: #4b5563;
-    }
-</style>
-
-<div class="facility-card">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Create New Facility</h1>
-
-    <form method="POST" action="<?= site_url('facilities/store') ?>">
-        <?= csrf_field() ?>
-
-        <label class="form-label">Name:</label>
-        <input type="text" name="name" class="form-input" required>
-
-        <label class="form-label">Location:</label>
-        <input type="text" name="location" class="form-input" required>
-
-        <label class="form-label">Type:</label>
-        <input type="text" name="type" class="form-input" required>
-
-        <label class="form-label">Status:</label>
-        <select name="status" class="form-input" required>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-        </select>
-
-        <div class="flex justify-center mt-6">
-            <a href="<?= site_url('facilities') ?>" class="btn-back">Back to Facilities</a>
-            <button type="submit" class="btn-submit">Create Facility</button>
+<div class="max-w-4xl mx-auto p-6">
+    <div class="mb-8">
+        <div class="flex items-center space-x-4 mb-4">
+            <a href="<?= site_url('facilities') ?>" class="text-gray-600 hover:text-gray-900">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900"><?= esc($title) ?></h1>
         </div>
-    </form>
+        <p class="text-gray-600">Fill in the details below to create a new facility.</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <form action="<?= site_url('facilities/create') ?>" method="post" class="space-y-6">
+            <?= csrf_field() ?>
+
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                <input type="text" id="name" name="name" value="<?= old('name') ?>" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter facility name">
+                <?php if (session()->has('errors') && ($error = session('errors')['name'] ?? null)): ?>
+                    <div class="text-red-500 text-sm mt-1"><?= esc($error) ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                <textarea id="description" name="description" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe the facility"><?= old('description') ?></textarea>
+                <?php if (session()->has('errors') && ($error = session('errors')['description'] ?? null)): ?>
+                    <div class="text-red-500 text-sm mt-1"><?= esc($error) ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div>
+                <label for="location" class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                <input type="text" id="location" name="location" value="<?= old('location') ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter facility location">
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6 border-t">
+                <a href="<?= site_url('facilities') ?>" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Cancel</a>
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Create Facility</button>
+            </div>
+        </form>
+    </div>
 </div>
 <?= $this->endSection() ?>
