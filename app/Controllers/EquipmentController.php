@@ -109,7 +109,16 @@ class EquipmentController extends BaseController
     public function delete($id = null)
     {
         $model = new EquipmentModel();
-        $model->delete($id);
-        return redirect()->to('/equipment')->with('success', 'Equipment deleted.');
+        $equipment = $model->find($id);
+
+        if (!$equipment) {
+            return redirect()->to('/equipment')->with('error', 'Equipment not found.');
+        }
+
+        if ($model->delete($id)) {
+            return redirect()->to('/equipment')->with('success', 'Equipment deleted.');
+        } else {
+            return redirect()->to('/equipment')->with('error', 'Failed to delete equipment.');
+        }
     }
 }

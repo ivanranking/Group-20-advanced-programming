@@ -42,10 +42,35 @@ class Services extends BaseController
     {
         $model = new ServiceModel();
         if ($this->request->getMethod() === 'post' && $model->save($this->request->getPost())) {
-            return redirect()->to('/services')->with('success', 'Service added.');
+            // Add notification for new service creation
+            $serviceData = $this->request->getPost();
+            $this->addServiceNotification($serviceData);
+            return redirect()->to('/services')->with('success', 'Service added successfully!');
         } else {
             return redirect()->back()->withInput()->with('errors', $model->errors());
         }
+    }
+
+    private function addServiceNotification($serviceData)
+    {
+        // Create a simple notification system
+        $notification = [
+            'type' => 'service_created',
+            'title' => 'New Service Created',
+            'message' => 'A new service "' . ($serviceData['name'] ?? 'Unnamed Service') . '" has been added to the system.',
+            'timestamp' => date('Y-m-d H:i:s'),
+            'icon' => 'fas fa-cogs',
+            'color' => 'success'
+        ];
+
+        // Store notification in session for dashboard display
+        $existingNotifications = session()->get('dashboard_notifications') ?? [];
+        array_unshift($existingNotifications, $notification);
+
+        // Keep only last 10 notifications
+        $existingNotifications = array_slice($existingNotifications, 0, 10);
+
+        session()->set('dashboard_notifications', $existingNotifications);
     }
 
     public function show($id = null)

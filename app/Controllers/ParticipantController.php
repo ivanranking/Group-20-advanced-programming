@@ -3,13 +3,21 @@
 namespace App\Controllers;
 
 use App\Models\ParticipantModel;
-use App\Controllers\BaseController;
+ use App\Models\ActivityModel;
+ use App\Controllers\BaseController;
 
 class Participant extends BaseController
-{
-    /**
-     * Display a list of all participants.
-     */
+ {
+     protected $activityModel;
+
+     public function __construct()
+     {
+         $this->activityModel = new ActivityModel();
+     }
+
+     /**
+      * Display a list of all participants.
+      */
     public function index()
     {
         $participantModel = new ParticipantModel();
@@ -66,6 +74,11 @@ class Participant extends BaseController
             return redirect()->back()->withInput()->with('errors', $participantModel->errors());
         }
 
+        // Log activity
+        $participantId = $participantModel->getInsertID();
+        $participantName = $data['name'];
+        $this->activityModel->logActivity('create', 'participant', $participantId, "Created participant: {$participantName}");
+
         return redirect()->to('/participants')->with('success', 'Participant created successfully.');
     }
 
@@ -109,6 +122,10 @@ class Participant extends BaseController
             return redirect()->back()->withInput()->with('errors', $participantModel->errors());
         }
 
+        // Log activity
+        $participantName = $data['name'] ?? $participant['name'];
+        $this->activityModel->logActivity('update', 'participant', $id, "Updated participant: {$participantName}");
+
         return redirect()->to('/participants/' . $id)->with('success', 'Participant updated successfully.');
     }
 
@@ -126,6 +143,10 @@ class Participant extends BaseController
         }
 
         if ($participantModel->delete($id)) {
+            // Log activity
+            $participantName = $participant['name'];
+            $this->activityModel->logActivity('delete', 'participant', $id, "Deleted participant: {$participantName}");
+
             return redirect()->to('/participants')->with('success', 'Participant deleted successfully.');
         } else {
             return redirect()->to('/participants')->with('error', 'Failed to delete participant.');

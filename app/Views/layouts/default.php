@@ -10,8 +10,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        :root {
+            /* Default theme variables */
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --background-color: #ffffff;
+            --surface-color: #f8f9fa;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .bg-white {
+            background-color: var(--surface-color) !important;
+        }
+
+        .text-gray-800 {
+            color: var(--text-primary) !important;
         }
     </style>
 </head>
@@ -94,8 +114,11 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-8 overflow-y-auto">
-        <?= $this->renderSection('content') ?>
-    </div>
-</body>
-</html>
+     <div class="flex-1 p-8 overflow-y-auto">
+         <?= $this->renderSection('content') ?>
+     </div>
+
+     <!-- Theme and Language Loader -->
+     <?= $this->include('layouts/theme_loader') ?>
+ </body>
+ </html>

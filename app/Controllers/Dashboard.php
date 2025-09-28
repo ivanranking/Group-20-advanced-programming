@@ -26,7 +26,8 @@ class Dashboard extends BaseController
                 'recent_equipment' => $db->table('equipment')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
                 'recent_services' => $db->table('services')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
                 'recent_facilities' => $db->table('facilities')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
-                'recent_outcomes' => $db->table('outcomes')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray()
+                'recent_outcomes' => $db->table('outcomes')->orderBy('created_at', 'DESC')->limit(5)->get()->getResultArray(),
+                'notifications' => session()->get('dashboard_notifications') ?? []
             ];
         } catch (\Throwable $e) {
             $data = [

@@ -3,16 +3,24 @@
 namespace App\Controllers;
 
 use App\Models\ProjectModel;
-use App\Models\ProgramModel;
-use App\Models\FacilityModel;
-use App\Models\ParticipantModel;
-use App\Controllers\BaseController;
+ use App\Models\ProgramModel;
+ use App\Models\FacilityModel;
+ use App\Models\ParticipantModel;
+ use App\Models\ActivityModel;
+ use App\Controllers\BaseController;
 
 class ProjectController extends BaseController
-{
-    /**
-     * Display a list of all projects with filtering by facility/program.
-     */
+ {
+     protected $activityModel;
+
+     public function __construct()
+     {
+         $this->activityModel = new ActivityModel();
+     }
+
+     /**
+      * Display a list of all projects with filtering by facility/program.
+      */
     public function index()
     {
         $projectModel = new ProjectModel();
@@ -116,6 +124,11 @@ class ProjectController extends BaseController
             return redirect()->back()->withInput()->with('errors', $errors);
         }
 
+        // Log activity
+        $projectId = $projectModel->getInsertID();
+        $projectName = $data['name'];
+        $this->activityModel->logActivity('create', 'project', $projectId, "Created project: {$projectName}");
+
         return redirect()->to('/projects')->with('success', 'Project created successfully.');
     }
 
@@ -166,6 +179,10 @@ class ProjectController extends BaseController
             return redirect()->back()->withInput()->with('errors', $projectModel->errors());
         }
 
+        // Log activity
+        $projectName = $data['name'] ?? $project['name'];
+        $this->activityModel->logActivity('update', 'project', $id, "Updated project: {$projectName}");
+
         return redirect()->to('/projects/' . $id)->with('success', 'Project updated successfully.');
     }
 
@@ -183,6 +200,10 @@ class ProjectController extends BaseController
         }
 
         if ($projectModel->delete($id)) {
+            // Log activity
+            $projectName = $project['name'];
+            $this->activityModel->logActivity('delete', 'project', $id, "Deleted project: {$projectName}");
+
             return redirect()->to('/projects')->with('success', 'Project deleted successfully.');
         } else {
             return redirect()->to('/projects')->with('error', 'Failed to delete project.');
